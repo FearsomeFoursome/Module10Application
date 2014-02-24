@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -37,41 +36,25 @@ import javax.swing.JOptionPane;
  */
 public class GUI extends javax.swing.JFrame {
 
-    //Coding by Bella Belova
-    
-    
 	/**
 	 * Creates new form GUI
 	 */
     
-    //Declare variables to use for error Exceptions
-    private String first_name;
-    private String last_name;
-    private String address1;
-    private String city;
-    private String State;
-    private String zip;
-    private String phone;
-    private String email;
+    //Declare variables to use for error handling
+	 private String errortext;
+	 private boolean error_flag = false;
     
     // Hold the data in the output textbox
     private String window_output_container;
     
     private String header = "First Name,Last Name,Address,Address 2,"
             + "City,State,Zip Code,Phone Number,Email Address\r\n";
-    //If the error exists in required fields, error_flag is set to true
-    private boolean error_flag = false;
-    
+
     //If header is displayed then toggle_header is true
     private boolean toggle_header = false;
     
     private Customer cst;
 	 private Component aComponent;
-
-         
-         
-         
-// AIC - Bella Belova         
 
 	public GUI() {
 		initComponents();
@@ -446,345 +429,117 @@ public class GUI extends javax.swing.JFrame {
 
     private void SaveRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveRecordActionPerformed
 
-        
-// Coding by Bella Belova        
-        
-        
-        
-        // The following statements check whether or not GUI fields are
-        // empty.  If they are, msg box will be displayed and focus
-        // will be set on missing field 
-       //first two variables made unnecessary by later code edits -Amy
-		 //String temp_output_string;      // temporary holds output textbox data with or without header
-        //int header_index;               // header length
-        error_flag = false;             // Variable initiation set false
-        
-        
-        // First Name is required field.  If field is empty an error msg 
-        // displays the error and focus set on missing field
-        try
-        {
-            cst.setFName(FirstNameField.getText());
-            
-            if(cst.getFName().isEmpty() == true)
-            {
-                error_flag = true;
-                throw Exception (first_name);
-                            
-            }     // end if first name
+		 //reinitialize the error handling variables
+        error_flag = false;
+		  errortext = "";
 
-         
-        }       // end try first name
-        
-        catch (Exception first_name)
-        {
-            JOptionPane.showMessageDialog(rootPane, "First Name missing", "First Name", WIDTH);
-            FirstNameField.requestFocus();
-                 
-        }   //end catch first name
-
-        // Last Name is required field.  If field is empty an error msg 
-        // displays the error and focus set on missing field
-        
-        try
-        {
-            cst.setLName(LastNameField.getText());
-            
-            if(cst.getLName().isEmpty() == true)
-            {
-                error_flag = true;
-                throw Exception (last_name);
-                            
-            }       // end if last name
-
-         }       // end try last name
-        
-        catch (Exception last_name)
-        {
-            JOptionPane.showMessageDialog(rootPane, "Last Name missing", "Last Name", WIDTH);
-            LastNameField.requestFocus();
-            
-        }   //end catch last name
-               
-        
-        // Address1 is required field.  If field is empty an error msg 
-        // displays the error and focus set on missing field        
-        try
-        {
-            cst.setAddress(Address1Field.getText());
-            
-            if(cst.getAddress().isEmpty() == true)
-            {
-                error_flag = true;
-                throw Exception (address1);
-            
-            }       // end if address1
-
-         }       // end try address1
-        
-        catch (Exception address1)
-        {
-            JOptionPane.showMessageDialog(rootPane, "Address missing", "Address", WIDTH);
-            Address1Field.requestFocus();
-
-        }   // end catch address1
-        
-        
-        // The field is optional.
-        cst.setAddress2(Address2Field.getText());
-                
-        
-        // City is required field.  If field is empty an error msg 
-        // displays the error and focus set on missing field        
-        try
-        {
-            cst.setCity(CityField.getText());
-            
-            if(cst.getCity().isEmpty() == true)
-            {
-                error_flag = true;
-                throw Exception (city);
-            }       // end if city
-
-         }       // end try city
-                
-         catch (Exception city)
-         {
-             JOptionPane.showMessageDialog(rootPane, "City missing", "City", WIDTH);
-             CityField.requestFocus();
-         
-         }   // end catch city
-        
-        // State is required field.  If field is empty an error msg 
-        // displays the error and focus set on missing field        
-        try
-        {
-            cst.setState((String)StateDropDown.getSelectedItem());
-            if (StateDropDown.getSelectedItem().equals((String)"Select"))
-
-            {
-                error_flag = true;
-                cst.setState("");     
-                throw Exception (State);
-            }
-          
-         }       // end try state
-                
-         catch (Exception State)
-         {
-             
-             JOptionPane.showMessageDialog(rootPane, "State missing", "State", WIDTH);                          
-         
-         }   // end catch state
-
-        // Email is required field.  If field is empty an error msg 
-        // displays the error and focus set on missing field        
-         try
-         {
-             cst.setEmail(EmailAddressField.getText());
-             
-             if(cst.getEmail().isEmpty() == true)
-             {
-                 error_flag = true;
-                 throw Exception (email);
-             }
-
-          }       // end try email
-                
-                      
-         catch (Exception email)
-         {
-             JOptionPane.showMessageDialog(rootPane, "EMail missing", "EMail Address", WIDTH);
-             EmailAddressField.requestFocus();
-         
-         }   //end catch email
-                  
-			/* Scott originally had a plain text field for phone number and ZIP code,
-			 * then Bella changed them to formatted text with masks when she started
-			 * writing handling code, then she changed them back to plain when some
-			 * things didn't work. Amy took it as a challenge and figured out some of
-			 * the issues with the formatted field, and changed the fields back to 
-			 * formatted after demoing her code. The following chunks of code are preserved
-			 * as part of that history, with authors indicated.
-			 */
-			
-			//Bella's code for the unformatted text field 
-			/*try
-         {
-             cst.setZip(ZipCodeField.getText());
-             
-             if(ZipCodeField.getText().length() != 5)
-             {
-                 ZipCodeField.setText("");
-                 error_flag = true;
-                 throw Exception (zip);
-             }      // end if zip
-             if(ZipCodeField.getText().matches("\\d"+"\\d" + "\\d" + "\\d" + "\\d") == false)
-             {
-                 ZipCodeField.setText("");
-                 error_flag = true;
-                 throw Exception (zip);
-             }
-                        
-          }       // end try zip
-                    
-         catch (Exception zip) 
-         {
-             JOptionPane.showMessageDialog(rootPane, "Zip Code 5 digits", "Zip Code", WIDTH);
-             error_flag = true;
-             ZipCodeField.requestFocus();
-          
-         }      // end catch zip
+		  /* 
+			* For all required fields, check to see if the field is empty.
+			* If empty, flip the error flag, have the field request focus,
+			* and add the name of the field to the error string. Fields are evaluated
+			* from bottom-up, which means the focus will end on the topmost field
+			* that is missing data.
 			*/
-			
-			//Amy's modified code for the formatted text field
-			cst.setZip(ZipCodeField.getText());
-			try
-			{
-				if(ZipCodeField.getText().length() != 5)
-				{
-					ZipCodeField.setText("");
-					error_flag = true;
-					throw Exception (zip);
-				}      // end if zip
-			}	// end try zip
+		  
+		  cst.setEmail(EmailAddressField.getText());
+  
+		  if(cst.getEmail().isEmpty() == true)
 
-			catch (Exception zip) 
-         {
-             JOptionPane.showMessageDialog(rootPane, "Zip Code 5 digits", "Zip Code", WIDTH);
-             error_flag = true;
-             ZipCodeField.requestFocus();
-          
-         }      // end catch zip
-			
-				
-				//Bella wrote this block of code to go with the original phone number formatted text field
-        /* try
-         {
-             cst.setPhone(PhoneNumberField.getText());
-             
-            if(PhoneNumberField.getText().length() < 10)
-             {
-                 PhoneNumberField.setText("");
-                 error_flag = true;
-                 throw Exception (phone);
-             }
-                        
-          }      // end try phone nbr
-         
-         catch (Exception phone) 
-         {
-             JOptionPane.showMessageDialog(rootPane, "Phone Numbere 10 digits", "Phone Number", WIDTH);
-             error_flag = true;
-             PhoneNumberField.requestFocus();
-         }      // end catch phone nbr
-*/
-         
-				 
-				 //Bella then changed the field to unformatted text, and used this code for it
-       /*if (PhoneNumberField.getText().isEmpty() == true)
-       {
-           cst.setPhone("");
-           
-       }
-       
-       if (PhoneNumberField.getText().matches("\\d"+"\\d" + "\\d" + "\\d" + "\\d"+"\\d"+"\\d" + "\\d" + "\\d" + "\\d") == false)
-       {
-           cst.setPhone("");
-           
-       }*/
-       
-			/* Amy wrote this final section, which checks to see if the formatted
-			 * field is empty by using a string match against the mask. Since the mask
-			 * ensures the field will either be empty or correctly filled, partial-fill
-			 * error checking is not required.
-			 */
-         //test string match to prevent output issues with masking
-				if(PhoneNumberField.getText().equals("(   )   -    "))
-				{
-					cst.setPhone("");	// prevents the output from having the mask format show up
-			   } //end if
-				else
-				{
-					cst.setPhone(PhoneNumberField.getText());
-				} //end else
-         
-         // Check if header is displayed.
+		  {
+			  error_flag = true;
+			  errortext = "Email\n" + errortext;
+			  EmailAddressField.requestFocus();
+		  } //end email if
 
-         
-         if(error_flag == false)
-         {
-				//unneeded code; more efficient header handling in header toggle
-				//original code here by Bella; revisions by Amy
-				/*
-          //The temp_output_string holds the existed data in output textbox
-             temp_output_string = FileOutputArea.getText();
-             if(toggle_header == true)
-             {
-                 //Header is displayed.  To avoid duplicate header insertion
-                 // separate data from header on the header length
-                 header_index = header.length();
-                 
-                 // all data from output textbox saved in window_output_container
-                 // without header
-                 window_output_container = temp_output_string.substring(header_index);
-             }
-             else
-             {
-                 // data copied to window_output_container
-                window_output_container = FileOutputArea.getText();
-             } 
+		  cst.setZip(ZipCodeField.getText());
+
+		  if(ZipCodeField.getText().equals("     "))
+		  {
+			  ZipCodeField.setText("");
+			  error_flag = true;
+			  errortext = "Zip Code\n" + errortext;
+			  ZipCodeField.requestFocus();
+		  } //end zip if
+
+		  cst.setState((String)StateDropDown.getSelectedItem());
+           
+		  if (StateDropDown.getSelectedItem().equals((String)"Select"))
+		  {
+			  error_flag = true;
+			  errortext = "State\n" + errortext;
+   		  cst.setState("");     
+			  StateDropDown.requestFocus();
+		  } //end state if
+
+		  cst.setCity(CityField.getText());
+                    
+		  if(cst.getCity().isEmpty() == true)
+ 		  {
+			  error_flag = true;
+			  errortext = "City\n" + errortext;
+			  CityField.requestFocus();
+		  } //end city if	
+		     
+		  cst.setAddress(Address1Field.getText());
             
-             //Syncronize window_output_container with with last insert
-             window_output_container += cst.print();
-             */
-				
-		//grab text from output area in case of edits; append data from current customer object, display all
-		//revised lines by Amy
-		window_output_container = FileOutputArea.getText() + cst.print();
-		FileOutputArea.setText(window_output_container);
-				
-             //Clear fields (moved to ClearGUIFields() by Amy)
-         /*    FirstNameField.setText("");
-             LastNameField.setText("");
-             Address1Field.setText("");
-             Address2Field.setText("");
-             CityField.setText("");
-             StateDropDown.setSelectedIndex(0);
-             ZipCodeField.setValue(null);		//required to prevent issues with formatted text
-             PhoneNumberField.setValue(null);	//ditto
-             EmailAddressField.setText("");
-             FirstNameField.requestFocus();
-             */
-		 ClearGUIFields();
-             
-				 //even more unnecessary header handling - originally by Bella; revised by Amy
-				 /*
-             // Format output window.  if toggle_header is set to true
-             // then insert header and then data
-             if(toggle_header == true)
-             {
-					 FileOutputArea.setText("");
-                 FileOutputArea.setText(header);
-                 FileOutputArea.append(window_output_container);
-             }      // end if
+		  if(cst.getAddress().isEmpty() == true)
+		  {
+			  error_flag = true;
+			  errortext = "Address\n" + errortext;
+			  Address1Field.requestFocus();
+		  } //end address1 if
+
+
+		  cst.setLName(LastNameField.getText());
+		  
+		  if(cst.getLName().isEmpty() == true)
+		  {
+			  error_flag = true;
+			  errortext = "Last Name\n" + errortext;
+			  LastNameField.requestFocus();
+		  } //end lastname if
+ 
+		  cst.setFName(FirstNameField.getText());
+
+		  if(cst.getFName().isEmpty() == true)
+		  {
+			  error_flag = true;
+			  errortext = "First Name\n" + errortext;
+			  FirstNameField.requestFocus();
+		  } //end firstname if
+
+
+		  //two optional fields; no required checks for these
+  			cst.setAddress2(Address2Field.getText());
         
-             else 
-             {
-                 // toggle_header set to false, only existed data displayed in
-                 // output textbox
-					 FileOutputArea.setText("");
-                 FileOutputArea.setText(window_output_container);
-             }      // end else
-				 */
-         }  // end if
+   		//test string match to prevent output issues with masking
+			if(PhoneNumberField.getText().equals("(   )   -    "))
+			{
+				cst.setPhone("");	// prevents the output from having the mask format show up
+			} //end if
+			else
+			{
+				cst.setPhone(PhoneNumberField.getText());
+			} //end else
+
+			//if the error flag was flipped, display an error message, using the error string
+			if(error_flag == true)
+			{
+				JOptionPane.showMessageDialog(rootPane, "Please enter all required fields to save record.\nMissing fields are:\n" 
+						  + errortext, "Required fields missing", WIDTH);
+			}
+			else
+         {
+				//grab text from output area in case of edits; append data from current customer object, display all
+				window_output_container = FileOutputArea.getText() + cst.print();
+				FileOutputArea.setText(window_output_container);
+
+				ClearGUIFields();
+			}
          
-         
-         // Clear class container
-         cst.ClearFields();
-    
-    // AIC - Bella Belova
-         
+         //no matter what happens, reinitialize object using constructor to reset values
+         cst = new Customer();
+  
     }//GEN-LAST:event_SaveRecordActionPerformed
 
     private void StateDropDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StateDropDownActionPerformed
@@ -792,12 +547,8 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_StateDropDownActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        
-        
-// Coding by Bella Belova        
-        
+
         // Exit button pressed while there are not saved data in output textbox
-        
         if (FileOutputArea.getText().isEmpty() != true)
         {
             // Message box OK / Cancel to prevent loosing data.  "0" if OK is selected
@@ -810,18 +561,11 @@ public class GUI extends javax.swing.JFrame {
         {
             System.exit(0);
         }
-        
-// AIC - Bella Belova
-        
+               
     }//GEN-LAST:event_ExitActionPerformed
 
     private void AddHeaderRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddHeaderRowActionPerformed
-
-// Coding by Bella Belova        
-        
        // Add or remove header line
-
-        
         // Command button pressed once, toggle_header sets to true
         // Command buttone pressed second time, toggle_header sets to false
         if(toggle_header == false)
@@ -830,7 +574,7 @@ public class GUI extends javax.swing.JFrame {
             toggle_header = false;
         
         //get text from file output box first, in case of user edits (line added by Amy)
-	window_output_container = FileOutputArea.getText();
+		  window_output_container = FileOutputArea.getText();
    
         //Clean an output textbox to avoid duplicate header
         FileOutputArea.setText("");
@@ -842,16 +586,10 @@ public class GUI extends javax.swing.JFrame {
         }
         else
         {
-            //modified by Amy to preserve user edits to file output 
-            //strip header length from start of string; this line cannot be called unless header has previously been added
-            
-            window_output_container = window_output_container.substring(header.length(), window_output_container.length());
-            FileOutputArea.setText(window_output_container);
-            
-            //previous code was just this line - without the previous getText(), it did not account for edits
-            //FileOutputArea.setText(window_output_container);
+			  //strip header length from start of string; this line cannot be called unless header has previously been added
+ 			  window_output_container = window_output_container.substring(header.length(), window_output_container.length());
+			  FileOutputArea.setText(window_output_container);
         }
-        
     }//GEN-LAST:event_AddHeaderRowActionPerformed
 
     private void FirstNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameFieldActionPerformed
@@ -860,35 +598,27 @@ public class GUI extends javax.swing.JFrame {
 
     
     //  The following lines of code will select text in textbox if clicked
-    
-    
     private void FirstNameFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_FirstNameFieldFocusGained
-        // Coding by Bella Belova - AIC
         FirstNameField.selectAll();
     }//GEN-LAST:event_FirstNameFieldFocusGained
 
     private void LastNameFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_LastNameFieldFocusGained
-        // Coding by Bella Belova - AIC
         LastNameField.selectAll();
     }//GEN-LAST:event_LastNameFieldFocusGained
 
     private void Address1FieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Address1FieldFocusGained
-        //Coding by Bella Belova - AIC
         Address1Field.selectAll();
     }//GEN-LAST:event_Address1FieldFocusGained
 
     private void Address2FieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_Address2FieldFocusGained
-        // Coding by Bella Belova - AIC
         Address2Field.selectAll();
     }//GEN-LAST:event_Address2FieldFocusGained
 
     private void CityFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_CityFieldFocusGained
-        // Coding by Bella Belova - AIC
         CityField.selectAll();
     }//GEN-LAST:event_CityFieldFocusGained
 
     private void EmailAddressFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_EmailAddressFieldFocusGained
-        // Coding by Bella Belova - AIC
         EmailAddressField.selectAll();
     }//GEN-LAST:event_EmailAddressFieldFocusGained
 
@@ -914,9 +644,15 @@ public class GUI extends javax.swing.JFrame {
 					 JOptionPane.showMessageDialog(rootPane, "Error accessing file, please check filename and try again.", "File error", WIDTH);
 				}
 			}
-		  //else removed; no need for a popup if the user cancels access -Amy
 
-
+		  //if the first row of the file being read in matches the header, set the header toggle
+		  //this prevents duplicate header rows being added to loaded files
+		  //partial match rather than complete to avoid issues with \r\n characters in the actual header string
+		  String temp = FileOutputArea.getText().substring(0, 39);
+		  if (temp.equals("First Name,Last Name,Address,Address 2,"))
+					 {
+						 toggle_header = true;
+					 }
    }//GEN-LAST:event_OpenFileActionPerformed
 
    private void SaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFileActionPerformed
@@ -943,7 +679,7 @@ public class GUI extends javax.swing.JFrame {
 					ClearGUIFields();
 					FileOutputArea.setText("");
 
-				} catch (IOException e) //error message added by Amy
+				} catch (IOException e)
 
 					{
 						JOptionPane.showMessageDialog(rootPane, "Error saving file, please retry.", "File error", WIDTH);
@@ -965,8 +701,6 @@ public class GUI extends javax.swing.JFrame {
    }//GEN-LAST:event_ZipCodeFieldFocusGained
 
    private void NewFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewFileActionPerformed
-
-		//this button action written by Amy
 		//warn user that any data in fields will be lost
       if (JOptionPane.showConfirmDialog(rootPane, "This will clear all fields and delete all unsaved data.\nAre you sure?", "Data is not saved", 2) == 0)
             {
@@ -1050,25 +784,9 @@ public class GUI extends javax.swing.JFrame {
    private javax.swing.JScrollPane jScrollPane1;
    // End of variables declaration//GEN-END:variables
 
-    private Exception Exception(String email) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-       
-      private static class filechooser {
-
-        private static File getSelectedFile() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        public filechooser() {
-        }
-    }
-		
-		//clear all GUI fields other than the file output area - written by Amy
+	//clear all GUI fields other than the file output area
 		private void ClearGUIFields()
 		{
-
 			FirstNameField.setText("");
 			LastNameField.setText("");
 			Address1Field.setText("");
